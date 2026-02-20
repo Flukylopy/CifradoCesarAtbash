@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Cifrado César y Atbash</title>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!---1-->
+<div class="container">
+    <h2>Cifrado César y Atbash</h2>
+    <!---1.1-->
+    <label>Abecedario base (charset):</label>
+    <input type="text" id="charset" value="abcdefghijklmnopqrstuvwxyz">
+
+    <label>Mensaje:</label>
+    <textarea id="message" rows="3"></textarea>
+    <!---1.2-->
+    <label>Método:</label>
+    <select id="method">
+        <option value="cesar">César</option>
+        <option value="atbash">Atbash</option>
+    </select>
+    <!---1.3-->
+    <label>Desplazamiento (solo César):</label>
+    <input type="number" id="shift" value="3">
+    <!---1.4-->
+    <button onclick="encrypt()">Cifrar</button>
+    <button onclick="decrypt()">Descifrar</button>
+
+    <div class="result">
+        Resultado: <span id="output"></span>
+    </div>
+</div>
+<!---2-->
+<script>
+    let lastEncrypted = "";
+    //2.1
+    function encrypt() {
+        
+        const rawCharset = document.getElementById("charset").value;
+        const charset = normalizeCharset(rawCharset);
+        const message = document.getElementById("message").value;
+        const method = document.getElementById("method").value;
+        const shift = parseInt(document.getElementById("shift").value);
+
+        let result = "";
+
+        if (method === "cesar") {
+            result = caesarCipher(message, charset, shift);
+        } else {
+            result = atbashCipher(message, charset);
+        }
+
+        lastEncrypted = result;
+        document.getElementById("output").textContent = result;
+    }
+    //2.2 
+    function decrypt() {
+        
+        const rawCharset = document.getElementById("charset").value;
+        const charset = normalizeCharset(rawCharset);
+        const method = document.getElementById("method").value;
+        const shift = parseInt(document.getElementById("shift").value);
+
+        let result = "";
+
+        if (method === "cesar") {
+            result = caesarCipher(lastEncrypted, charset, -shift);
+        } else {
+            result = atbashCipher(lastEncrypted, charset);
+        }
+
+        document.getElementById("output").textContent = result;
+    }
+
+    //2.3
+    function caesarCipher(text, charset, shift) {
+        let result = "";
+        const len = charset.length;
+
+        for (let char of text) {
+            //const index = charset.indexOf(char.toLowerCase());
+            const index = charset.indexOf(char);
+
+            if (index === -1) {
+                result += char;
+            } else {
+                let newIndex = (index + shift) % len;
+                if (newIndex < 0) newIndex += len;
+                result += charset[newIndex];
+            }
+        }
+        return result;
+    }
+    //2.4
+    function atbashCipher(text, charset) {
+        let result = "";
+        const reversed = charset.split("").reverse().join("");
+
+        for (let char of text) {
+            const index = charset;
+
+            if (index === -1) {
+                result += char;
+            } else {
+                result += reversed[index];
+            }
+        }
+        return result;
+    }
+    //2.5
+    function normalizeCharset(charset) {
+        let result = "";
+
+        for (let char of charset.toLowerCase()) {
+            if (!result.includes(char)) {
+                result += char;
+            }
+        }
+
+        return result;
+    }
+</script>
+
+</body>
+</html>
