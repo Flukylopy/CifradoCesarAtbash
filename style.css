@@ -47,7 +47,7 @@ body::before {
 @keyframes flicker { 0%,100%{opacity:1} 92%{opacity:1} 93%{opacity:0.94} 94%{opacity:1} 96%{opacity:0.97} 97%{opacity:1} }
 body { background:var(--bg); color:var(--text); font-family:var(--mono); min-height:100vh; display:flex; flex-direction:column; animation:flicker 8s infinite; }
 .encabezado { padding:1.5rem 2rem 1rem; border-bottom:1px solid var(--border2); }
-.encabezado::before { content:"SISTEMA CIFRADO ELIAS v2.4 // ACCESO AUTORIZADO"; display:block; font-size:0.65rem; color:var(--muted); letter-spacing:0.15em; margin-bottom:0.5rem; }
+.encabezado::before { content:"SISTEMA CIFRADO // ACCESO AUTORIZADO"; display:block; font-size:0.65rem; color:var(--muted); letter-spacing:0.15em; margin-bottom:0.5rem; }
 .encabezado h1 { font-size:1.8rem; font-weight:400; color:var(--green); letter-spacing:0.1em; text-shadow:0 0 10px rgba(0,255,65,0.5),0 0 20px rgba(0,255,65,0.2); }
 .encabezado h1::before { content:"> "; color:var(--muted); }
 .subtitulo { font-size:0.72rem; color:var(--muted); letter-spacing:0.1em; margin-top:4px; }
