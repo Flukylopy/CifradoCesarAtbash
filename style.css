@@ -31,3 +31,116 @@
             font-weight: bold;
             color: #333;
         }
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:#0a0f0a; --surface:#0d130d; --surface2:#111811;
+  --green:#00ff41; --green2:#00c032; --green3:#007a1f; --green-dim:#004d12;
+  --amber:#ffb000; --muted:#3a6e3a; --border:#1a3a1a; --border2:#245224;
+  --text:#00e838; --mono:'Share Tech Mono','Courier New',monospace; --radius:2px;
+}
+body::before {
+  content:""; position:fixed; inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.08) 2px,rgba(0,0,0,0.08) 4px);
+  pointer-events:none; z-index:9999;
+}
+@keyframes flicker { 0%,100%{opacity:1} 92%{opacity:1} 93%{opacity:0.94} 94%{opacity:1} 96%{opacity:0.97} 97%{opacity:1} }
+body { background:var(--bg); color:var(--text); font-family:var(--mono); min-height:100vh; display:flex; flex-direction:column; animation:flicker 8s infinite; }
+.encabezado { padding:1.5rem 2rem 1rem; border-bottom:1px solid var(--border2); }
+.encabezado::before { content:"SISTEMA CIFRADO ELIAS v2.4 // ACCESO AUTORIZADO"; display:block; font-size:0.65rem; color:var(--muted); letter-spacing:0.15em; margin-bottom:0.5rem; }
+.encabezado h1 { font-size:1.8rem; font-weight:400; color:var(--green); letter-spacing:0.1em; text-shadow:0 0 10px rgba(0,255,65,0.5),0 0 20px rgba(0,255,65,0.2); }
+.encabezado h1::before { content:"> "; color:var(--muted); }
+.subtitulo { font-size:0.72rem; color:var(--muted); letter-spacing:0.1em; margin-top:4px; }
+.cursor { display:inline-block; width:10px; height:1.1em; background:var(--green); margin-left:4px; vertical-align:text-bottom; animation:blink 1s step-end infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+main { flex:1; padding:1.5rem 2rem; max-width:960px; width:100%; margin:0 auto; }
+.tabs { display:flex; gap:0; margin-bottom:1.5rem; border:1px solid var(--border2); width:fit-content; }
+.boton-tab { padding:7px 20px; border:none; border-right:1px solid var(--border2); background:transparent; color:var(--muted); font-family:var(--mono); font-size:0.8rem; letter-spacing:0.1em; cursor:pointer; transition:all 0.1s; text-transform:uppercase; }
+.boton-tab:last-child { border-right:none; }
+.boton-tab:hover { background:var(--surface2); color:var(--text); }
+.boton-tab.active { background:var(--green-dim); color:var(--green); text-shadow:0 0 8px rgba(0,255,65,0.6); }
+.boton-tab.active::before { content:"[ "; }
+.boton-tab.active::after  { content:" ]"; }
+.configuracion { background:var(--surface); border:1px solid var(--border2); padding:1rem 1.25rem; margin-bottom:1rem; display:flex; flex-direction:column; gap:10px; position:relative; }
+.configuracion::before { content:"// CONFIG"; position:absolute; top:-1px; left:12px; font-size:0.65rem; color:var(--muted); background:var(--bg); padding:0 6px; letter-spacing:0.1em; }
+label { font-size:0.72rem; color:var(--muted); letter-spacing:0.12em; text-transform:uppercase; }
+label::before { content:"# "; }
+input[type=number],input[type=text] { background:var(--surface2); border:1px solid var(--border2); border-radius:var(--radius); color:var(--green); font-family:var(--mono); font-size:0.85rem; padding:7px 10px; outline:none; transition:border-color 0.1s,box-shadow 0.1s; letter-spacing:0.05em; }
+input[type=number] { width:90px; }
+input[type=text] { width:100%; }
+input:focus { border-color:var(--green2); box-shadow:0 0 8px rgba(0,192,50,0.3); }
+.grupo-turno { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.grupo-turno label { margin:0; }
+.pista { font-size:0.72rem; color:var(--muted); }
+.fila { display:flex; gap:8px; align-items:center; }
+.caja-charset { display:flex; flex-direction:column; gap:6px; }
+.fila-charset { display:flex; gap:8px; }
+.fila-charset input { flex:1; }
+.pista-charset { font-size:0.7rem; color:var(--muted); line-height:1.5; }
+.pista-charset::before { content:"// "; }
+.hidden { display:none !important; }
+.boton { padding:8px 16px; border:1px solid var(--border2); border-radius:var(--radius); background:transparent; color:var(--text); font-family:var(--mono); font-size:0.8rem; letter-spacing:0.08em; cursor:pointer; transition:all 0.1s; text-transform:uppercase; }
+.boton:hover { background:var(--green-dim); border-color:var(--green3); color:var(--green); box-shadow:0 0 8px rgba(0,255,65,0.15); }
+.boton:active { transform:scale(0.97); }
+.boton--primario { background:var(--green-dim); border-color:var(--green2); color:var(--green); text-shadow:0 0 6px rgba(0,255,65,0.4); }
+.boton--primario:hover { box-shadow:0 0 14px rgba(0,255,65,0.3); }
+.boton--cambio { font-size:1rem; padding:8px 12px; }
+.boton--chico { padding:4px 10px; font-size:0.72rem; }
+.boton--simple { border-color:var(--border); color:var(--muted); }
+.boton--simple:hover { color:var(--text); border-color:var(--border2); }
+.boton--mostrar { background:transparent; border:1px solid var(--border); border-radius:var(--radius); color:var(--muted); font-family:var(--mono); font-size:0.75rem; cursor:pointer; padding:5px 12px; letter-spacing:0.08em; text-transform:uppercase; transition:all 0.1s; }
+.boton--mostrar:hover { color:var(--text); border-color:var(--border2); }
+.seccion-io { display:flex; flex-direction:column; gap:1rem; }
+.panel { background:var(--surface); border:1px solid var(--border2); }
+.panel-titulo { display:flex; justify-content:space-between; align-items:center; padding:8px 12px; border-bottom:1px solid var(--border); background:var(--surface2); }
+.etiqueta { font-size:0.7rem; color:var(--muted); letter-spacing:0.15em; text-transform:uppercase; }
+.etiqueta::before { content:"[ "; }
+.etiqueta::after  { content:" ]"; }
+.contador { font-size:0.7rem; color:var(--muted); }
+textarea { width:100%; background:transparent; border:none; color:var(--green); font-family:var(--mono); font-size:0.875rem; padding:12px 14px; resize:vertical; min-height:90px; outline:none; line-height:1.6; letter-spacing:0.03em; caret-color:var(--green); }
+textarea::placeholder { color:var(--muted); }
+textarea[readonly] { color:var(--green2); }
+.panel-pie { display:flex; justify-content:flex-end; padding:6px 10px; border-top:1px solid var(--border); background:var(--surface2); }
+.acciones { display:flex; justify-content:center; align-items:center; gap:10px; }
+.seccion-fuerza { display:flex; flex-direction:column; gap:1rem; }
+.lista-resultados { display:flex; flex-direction:column; gap:3px; max-height:400px; overflow-y:auto; padding:8px; }
+.resultado-item { display:flex; align-items:center; gap:8px; padding:6px 10px; border:1px solid var(--border); background:var(--surface2); font-size:0.8rem; }
+.resultado-item--probable { border-color:var(--green3); background:rgba(0,77,18,0.4); }
+.resultado-etiqueta { font-size:0.68rem; padding:2px 7px; white-space:nowrap; flex-shrink:0; border:1px solid; }
+.resultado-etiqueta--cesar  { border-color:var(--green3); color:var(--green2); }
+.resultado-etiqueta--atbash { border-color:var(--amber); color:var(--amber); }
+.resultado-texto { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--text); font-size:0.82rem; }
+.resultado-puntaje { font-size:0.7rem; color:var(--amber); white-space:nowrap; }
+.separador-resultados { display:flex; justify-content:space-between; align-items:center; padding:5px 10px; margin-top:6px; border-bottom:1px solid var(--border); }
+.separador-resultados .etiqueta { color:var(--muted); font-size:0.68rem; }
+.separador-resultados .etiqueta::before,.separador-resultados .etiqueta::after { content:""; }
+.seccion-ascii { margin-top:1rem; background:var(--surface); border:1px solid var(--border2); }
+.titulo-ascii { display:flex; justify-content:space-between; align-items:center; padding:8px 12px; border-bottom:1px solid var(--border); background:var(--surface2); }
+.meta-ascii { font-size:0.7rem; color:var(--muted); }
+.contenedor-tabla { overflow-x:auto; max-height:260px; overflow-y:auto; }
+.tabla-ascii { width:100%; border-collapse:collapse; font-size:0.8rem; }
+.tabla-ascii th { padding:6px 12px; text-align:left; font-size:0.68rem; color:var(--muted); font-weight:400; letter-spacing:0.1em; border-bottom:1px solid var(--border2); position:sticky; top:0; background:var(--surface2); text-transform:uppercase; }
+.tabla-ascii td { padding:4px 12px; border-bottom:1px solid var(--border); }
+.tabla-ascii tr:last-child td { border-bottom:none; }
+.fila-igual td { color:var(--muted); }
+.celda-resultado { color:var(--green2); }
+.celda-flecha { color:var(--green3); text-align:center; }
+.celda-codigo { color:var(--muted); }
+.etiqueta-especial { font-size:0.62rem; background:var(--surface2); border:1px solid var(--border2); padding:1px 4px; color:var(--muted); }
+.info-cifrado { display:flex; justify-content:flex-end; margin-top:1rem; }
+.distintivo { display:flex; align-items:center; gap:8px; padding:5px 14px; border:1px solid var(--border2); font-size:0.72rem; color:var(--muted); letter-spacing:0.1em; }
+.punto { width:7px; height:7px; border-radius:50%; background:var(--green); box-shadow:0 0 6px var(--green); animation:pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;box-shadow:0 0 6px var(--green)} 50%{opacity:0.4;box-shadow:none} }
+.aviso { position:fixed; bottom:1.5rem; right:1.5rem; padding:10px 16px; font-size:0.78rem; font-family:var(--mono); letter-spacing:0.08em; opacity:0; transform:translateY(8px); transition:all 0.2s; pointer-events:none; z-index:200; max-width:320px; border-left:3px solid; }
+.aviso--visible { opacity:1; transform:translateY(0); pointer-events:auto; }
+.aviso--success { background:#0a1f0a; color:var(--green);  border-color:var(--green2); }
+.aviso--error   { background:#1a0a0a; color:#ff5555;      border-color:#cc2222; }
+.aviso--info    { background:#0a0f1a; color:#55aaff;      border-color:#2255aa; }
+@keyframes flash { 0%{opacity:1} 50%{opacity:0.4} 100%{opacity:1} }
+.boton--activo { animation:flash 0.25s ease; }
+.pie { padding:0.8rem 2rem; text-align:center; font-size:0.65rem; color:var(--muted); border-top:1px solid var(--border); letter-spacing:0.15em; text-transform:uppercase; }
+.pie::before { content:"// "; }
+::-webkit-scrollbar { width:6px; height:6px; }
+::-webkit-scrollbar-track { background:var(--bg); }
+::-webkit-scrollbar-thumb { background:var(--green-dim); }
+::-webkit-scrollbar-thumb:hover { background:var(--green3); }
