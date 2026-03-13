@@ -1,18 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
-<!DOCTYPE html>
-<html lang="es">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Cifrado Elias – César &amp; Atbash</title>
-<link rel="stylesheet" href="style.css">
+<title>Cifrado Adbash – César &amp; Atbash</title>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
 </head>
 <body>
 
 <header class="encabezado">
-  <h1>CIFRADO ELIAS<span class="cursor"></span></h1>
+  <h1>CIFRADO AdbashCesar<span class="cursor"></span></h1>
   <p class="subtitulo">CESAR &amp; ATBASH // SOPORTE UNICODE COMPLETO</p>
 </header>
 
@@ -111,39 +109,54 @@
   </div>
 </main>
 
-<footer class="pie">Cifrado Elias · César &amp; Atbash · Unicode</footer>
+<footer class="pie">Cifrado  · César &amp; Atbash · Unicode</footer>
 <div class="aviso" id="toast" role="status" aria-live="polite"></div>
 
 <script>
+// [1] DEFAULT_CHARSET
 const DEFAULT_CHARSET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzáéíóúüñÁÉÍÓÚÜÑ0123456789 !\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
 
+// [2] validateCaesarParams
 function validateCaesarParams(text, charset, shift) {
   if (typeof text !== "string" || text.trim() === "") throw new Error("El texto no puede estar vacío");
   if (typeof charset !== "string" || charset.length < 2) throw new Error("El charset debe tener al menos 2 caracteres");
   if (!Number.isInteger(shift)) throw new Error("El desplazamiento debe ser un número entero");
 }
+
+// [3] caesarEncrypt
 function caesarEncrypt(text, charset, shift) {
   validateCaesarParams(text, charset, shift);
   const ca = [...charset], len = ca.length, ns = ((shift % len) + len) % len;
   return [...text].map(c => { const i = ca.indexOf(c); return i === -1 ? c : ca[(i + ns) % len]; }).join("");
 }
+
+// [4] caesarDecrypt
 function caesarDecrypt(text, charset, shift) {
   validateCaesarParams(text, charset, shift);
   const ca = [...charset], len = ca.length, ns = ((shift % len) + len) % len;
   return [...text].map(c => { const i = ca.indexOf(c); return i === -1 ? c : ca[((i - ns) + len) % len]; }).join("");
 }
+
+// [5] validateAtbashParams
 function validateAtbashParams(text, charset) {
   if (typeof text !== "string" || text.trim() === "") throw new Error("El texto no puede estar vacío");
   if (typeof charset !== "string" || charset.length < 2) throw new Error("El charset debe tener al menos 2 caracteres");
 }
+
+// [6] atbashProcess
 function atbashProcess(text, charset) {
   validateAtbashParams(text, charset);
   const ca = [...charset], len = ca.length;
   return [...text].map(c => { const i = ca.indexOf(c); return i === -1 ? c : ca[len - 1 - i]; }).join("");
 }
+
+// [7] atbashEncrypt
 function atbashEncrypt(t, c) { return atbashProcess(t, c); }
+
+// [8] atbashDecrypt
 function atbashDecrypt(t, c) { return atbashProcess(t, c); }
 
+// [9] PALABRAS_ES
 const PALABRAS_ES = [
   "el","la","los","las","de","del","en","que","y","a","un","una",
   "es","se","no","con","por","su","al","lo","como","pero","mas",
@@ -152,9 +165,13 @@ const PALABRAS_ES = [
   "mi","te","tu","hay","tiene","han","sido","muy","bien","puede",
   "sin","tiempo","mundo","hola","gracias","buenas","aqui","esto"
 ];
+
+// [10] scoreText
 function scoreText(text) {
   return (text.toLowerCase().match(/[a-záéíóúüñ]+/g) || []).filter(p => PALABRAS_ES.includes(p)).length;
 }
+
+// [11] bruteforceAnalyze
 function bruteforceAnalyze(text, charset) {
   const results = [];
   try { const r = atbashDecrypt(text, charset); results.push({ cipher:"Atbash", shift:null, resultado:r, score:scoreText(r) }); } catch(_) {}
@@ -165,7 +182,10 @@ function bruteforceAnalyze(text, charset) {
   return results;
 }
 
+// [12] state
 const state = { cipher:"caesar", lastAction:null };
+
+// [13] el
 const el = {
   tabs:document.querySelectorAll(".boton-tab"), shiftGroup:document.getElementById("shift-group"),
   shiftInput:document.getElementById("shift"), charsetInput:document.getElementById("charset"),
@@ -183,6 +203,7 @@ const el = {
   seccionResultadosBf:document.getElementById("seccion-resultados-bf"),
 };
 
+// [14] init
 function init() {
   el.charsetInput.value = DEFAULT_CHARSET;
   updateBadge();
@@ -209,6 +230,7 @@ function init() {
   el.bfAnalizar.addEventListener("click", handleBruteforce);
 }
 
+// [15] handleTabChange
 function handleTabChange(cipher) {
   state.cipher = cipher;
   el.tabs.forEach(t => t.classList.toggle("active", t.dataset.cipher === cipher));
@@ -220,6 +242,7 @@ function handleTabChange(cipher) {
   if (!bf) { updateBadge(); if (el.outputText.value && state.lastAction) handleProcess(state.lastAction); }
 }
 
+// [16] handleProcess
 function handleProcess(action) {
   const text = el.inputText.value, charset = el.charsetInput.value;
   const shift = parseInt(el.shiftInput.value, 10);
@@ -238,6 +261,7 @@ function handleProcess(action) {
   } catch(err) { showToast(err.message, "error"); }
 }
 
+// [17] handleSwap
 function handleSwap() {
   const tmp = el.inputText.value;
   el.inputText.value = el.outputText.value;
@@ -246,6 +270,7 @@ function handleSwap() {
   if (el.inputText.value) showToast("Textos intercambiados.", "info");
 }
 
+// [18] handleBruteforce
 function handleBruteforce() {
   const text = el.bfInput.value, charset = el.charsetInput.value;
   if (!text.trim()) { showToast("Pega un texto cifrado antes de analizar.", "error"); el.bfInput.focus(); return; }
@@ -255,15 +280,18 @@ function handleBruteforce() {
   showToast(`${results.length} combinaciones analizadas.`, "success");
 }
 
+// [19] buildBruteforceResults
 function buildBruteforceResults(results) {
   el.bfLista.innerHTML = "";
   const candidatos = results.filter(r => r.score > 0).sort((a,b) => b.score - a.score);
+  // [19a] sep
   function sep(titulo, conteo) {
     const d = document.createElement("div"); d.className = "separador-resultados";
     const t = document.createElement("span"); t.className = "etiqueta"; t.textContent = titulo;
     const c = document.createElement("span"); c.className = "contador"; c.textContent = conteo;
     d.append(t, c); return d;
   }
+  // [19b] fila
   function fila(r, resaltado) {
     const {cipher, shift, resultado, score} = r, esAtbash = cipher === "Atbash";
     const item = document.createElement("div");
@@ -290,6 +318,7 @@ function buildBruteforceResults(results) {
   el.seccionResultadosBf.classList.remove("hidden");
 }
 
+// [20] buildAsciiTable
 function buildAsciiTable(inputText, outputText, charset) {
   const MAX = 80, tbody = el.asciiTableBody;
   tbody.innerHTML = "";
@@ -306,26 +335,35 @@ function buildAsciiTable(inputText, outputText, charset) {
   el.asciiSection.classList.remove("hidden");
 }
 
+// [21] displayChar
 function displayChar(c) {
   if (c === " ")  return '<span class="etiqueta-especial">SPC</span>';
   if (c === "\n") return '<span class="etiqueta-especial">\\n</span>';
   if (c === "\t") return '<span class="etiqueta-especial">\\t</span>';
   return c;
 }
+
+// [22] updateBadge
 function updateBadge() {
   el.cipherBadge.textContent = state.cipher === "caesar"
     ? `CESAR // SHIFT: ${el.shiftInput.value || "?"}`
     : "ATBASH // SIMETRICO";
 }
+
+// [23] updateCharCount
 function updateCharCount() {
   const l = [...el.inputText.value].length;
   el.charCount.textContent = `${l} char${l !== 1 ? "s" : ""}`;
 }
+
+// [24] showToast
 function showToast(msg, type = "info") {
   el.toast.textContent = msg;
   el.toast.className = `aviso aviso--${type} aviso--visible`;
   setTimeout(() => el.toast.classList.remove("aviso--visible"), 3000);
 }
+
+// [25] flashButton
 function flashButton(btn) {
   btn.classList.add("boton--activo");
   btn.addEventListener("animationend", () => btn.classList.remove("boton--activo"), { once: true });
