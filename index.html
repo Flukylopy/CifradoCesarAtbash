@@ -118,9 +118,10 @@
     }
     //2.5
     function normalizeCharset(charset) {
+
         let result = "";
 
-        for (let char of charset.toLowerCase()) {
+        for (let char of charset) {
             if (!result.includes(char)) {
                 result += char;
             }
