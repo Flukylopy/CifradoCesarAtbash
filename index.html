@@ -43,7 +43,7 @@
     function encrypt() {
         
         const rawCharset = document.getElementById("charset").value;
-        const charset = normalizeCharset(rawCharset);
+        const charset = rawCharset;
         const message = document.getElementById("message").value;
         const method = document.getElementById("method").value;
         const shift = parseInt(document.getElementById("shift").value);
@@ -63,7 +63,7 @@
     function decrypt() {
         
         const rawCharset = document.getElementById("charset").value;
-        const charset = normalizeCharset(rawCharset);
+        const charset = rawCharset;
         const method = document.getElementById("method").value;
         const shift = parseInt(document.getElementById("shift").value);
 
@@ -116,24 +116,12 @@
 
         return result;
     }
-    //2.5
-    function normalizeCharset(charset) {
-
-        let result = "";
-
-        for (let char of charset) {
-            if (!result.includes(char)) {
-                result += char;
-            }
-        }
-
-        return result;
-    }
+    
 
     function analyzeCipher() {
 
         const rawCharset = document.getElementById("charset").value;
-        const charset = normalizeCharset(rawCharset);
+        const charset = rawCharset;
         const message = document.getElementById("message").value;
 
         let results = [];
